@@ -1,0 +1,54 @@
+{
+    "name": "webuni/commonmark-twig-renderer",
+    "type": "library",
+    "description": "The Twig renderer for CommonMark PHP implementation",
+    "keywords": ["markdown","twig","commonmark"],
+    "homepage": "https://github.com/webuni/commonmark-twig-renderer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Hasoň",
+            "email": "martin.hason@gmail.com",
+            "role": "Lead Developer"
+        }
+    ],
+    "require": {
+        "league/commonmark": ">=0.7",
+        "twig/twig": ">=1.12"
+    },
+    "require-dev": {
+        "league/commonmark": "@dev",
+        "jgm/CommonMark": "0.19",
+        "symfony/finder": "~2.3",
+        "phpunit/phpunit": "~4.3"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "jgm/CommonMark",
+                "version": "0.19",
+                "dist": {
+                    "url": "http://spec.commonmark.org/0.19/spec.txt",
+                    "type": "file"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Webuni\\CommonMark\\TwigRenderer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webuni\\CommonMark\\TwigRenderer\\Tests\\": "tests"
+        },
+        "classmap": ["vendor/league/commonmark/tests"]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
+}

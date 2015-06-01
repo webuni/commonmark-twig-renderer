@@ -1,0 +1,105 @@
+{% block document -%}
+    {% set content = commonmark_render_children(node) -%}
+    {{ content|raw }}{{ '' != content ? "\n" }}
+{%- endblock %}
+
+{% block block_quote -%}
+    {% set content = commonmark_render_children(node) -%}
+    <blockquote{{ commonmark_render_attributes(node) }}>
+    {%- if '' == content -%}
+        {{ commonmark_option('inner_separator', "\n") }}
+    {%- else -%}
+        {{- commonmark_option('inner_separator', "\n") }}{{ content|raw }}{{ commonmark_option('inner_separator', "\n") }}
+    {%- endif -%}
+    </blockquote>
+{%- endblock %}
+
+{% block fenced_code -%}
+    {% set language = node.infowords[0]|default -%}
+    <pre{{ commonmark_render_attributes(node) }}><code{% if language %} class="language-{{ language }}"{% endif %}>{{ node.stringcontent }}</code></pre>
+{%- endblock %}
+
+{% block header -%}
+    <h{{ node.level }}{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</h{{ node.level }}>
+{%- endblock %}
+
+{% block horizontal_rule -%}
+    <hr />
+{%- endblock %}
+
+{% block html_block -%}
+    {{ node.stringcontent|raw }}
+{%- endblock %}
+
+{% block indented_code -%}
+    <pre{{ commonmark_render_attributes(node) }}><code>{{ node.stringcontent }}</code></pre>
+{%- endblock %}
+
+{% block list_block -%}
+    {% if node.listdata.type == constant('TYPE_UNORDERED', node) -%}
+        <ul{{ commonmark_render_attributes(node) }}>
+            {{- commonmark_option('inner_separator', "\n") -}}
+            {{- commonmark_render_children(node, node.tight) -}}
+            {{- commonmark_option('inner_separator', "\n") -}}
+        </ul>
+    {%- else -%}
+        <ol{{ commonmark_render_attributes(node, node.listdata.start|default > 1 ? {start: node.listdata.start} : [] ) }}>
+            {{- commonmark_option('inner_separator', "\n") -}}
+            {{- commonmark_render_children(node, node.tight) -}}
+            {{- commonmark_option('inner_separator', "\n") -}}
+        </ol>
+    {%- endif %}
+{%- endblock %}
+
+{% block list_item -%}
+    {% set content = commonmark_render_children(node, in_tight_list|default(false)) -%}
+    <li{{ commonmark_render_attributes(node) }}>{{ content starts with '<' ? "\n" }}{{ content|raw }}{{ content ends with '>' ? "\n" }}</li>
+{%- endblock %}
+
+{% block paragraph -%}
+    {% if in_tight_list|default %}{{ commonmark_render_children(node) }}{% else %}<p{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</p>{% endif %}
+{%- endblock %}
+
+{# Inlines #}
+
+{% block code -%}
+    <code{{ commonmark_render_attributes(node) }}>{{ node.content }}</code>
+{%- endblock %}
+
+{% block emphasis -%}
+    <em{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</em>
+{%- endblock %}
+
+{% block html -%}
+    {{ node.content|raw }}
+{%- endblock %}
+
+{% block image -%}
+    {% set alt = commonmark_render_children(node)|commonmark_image_alt -%}
+    <img{{ commonmark_render_attributes(node, node.data.title|default ? {src: node.url, alt: alt, title: node.data.title}: {src: node.url, alt: alt}) }} />
+{%- endblock %}
+
+{% block link -%}
+    <a{{ commonmark_render_attributes(node, node.data.title ? {href: node.url, title: node.data.title} : {href: node.url}) }}>
+        {{- commonmark_render_children(node) -}}
+    </a>
+{%- endblock %}
+
+{% block newline -%}
+    {% if node.type == constant('HARDBREAK', node) -%}
+        <br />{{ "\n" }}
+    {%- else -%}
+        {{ commonmark_option('soft_break', "\n") }}
+    {%- endif %}
+{%- endblock %}
+
+{% block strong -%}
+    <strong{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</strong>
+{%- endblock %}
+
+{% block text -%}
+    {{ node.content }}
+{%- endblock %}
+
+{% block attributes %}
+{% endblock %}
