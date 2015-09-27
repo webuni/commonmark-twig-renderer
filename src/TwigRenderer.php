@@ -17,53 +17,41 @@ use League\CommonMark\HtmlRenderer;
 use League\CommonMark\Inline\Element\AbstractInline;
 
 /**
- * Class CommonMarkExtension
+ * Twig Renderer.
  *
- * @author Martin Hasoň <hason@webuni.cz>
+ * @author Martin Hasoň <martin.hason@gmail.com>
  */
 class TwigRenderer extends HtmlRenderer
 {
     private $twig;
     private $template;
-    private $cache = [];
 
     public function __construct(Environment $environment, \Twig_Environment $twig)
     {
         parent::__construct($environment);
         $this->twig = $twig;
-
-        if (!$twig->hasExtension('commonmark')) {
-            throw new \RuntimeException('You must register "commonmark" extension for Twig before instantiate TwigRenderer.');
-        }
-
-        $twig->getExtension('commonmark')->setRenderer($this);
     }
 
     protected function renderInline(AbstractInline $inline)
     {
-        return $this->renderElement($inline);
+        $options = $this->environment->getConfig('renderer', []);
+
+        return $this->getTemplate()->render([
+            'node'          => $inline,
+            'in_tight_list' => false,
+            'options'       => $options,
+        ]);
     }
 
     public function renderBlock(AbstractBlock $block, $inTightList = false)
     {
-        return $this->renderElement($block, $inTightList);
-    }
+        $options = $this->environment->getConfig('renderer', []);
 
-    private function getBlockName($node)
-    {
-        $ref = new \ReflectionClass($node);
-
-        return strtolower(preg_replace('/((?<=[a-z]|\d)[A-Z]|(?<!^)[A-Z](?=[a-z]))/', '_\\1', $ref->getShortName()));
-    }
-
-    private function renderElement($element, $inTightList = false)
-    {
-        $class = get_class($element);
-        if (!isset($this->cache[$class])) {
-            $this->cache[$class] = $this->getBlockName($element);
-        }
-
-        return $this->getTemplate()->renderBlock($this->cache[$class], ['node' => $element, 'in_tight_list' => $inTightList]);
+        return $this->getTemplate()->render([
+            'node'          => $block,
+            'in_tight_list' => $inTightList,
+            'options'       => $options,
+        ]);
     }
 
     private function getTemplate()

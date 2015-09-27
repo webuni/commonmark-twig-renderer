@@ -13,23 +13,26 @@
         }
     ],
     "require": {
-        "league/commonmark": ">=0.7",
-        "twig/twig": ">=1.12"
+        "php": ">=5.4",
+        "league/commonmark": "^0.11",
+        "twig/twig": "~1.12|~2.0"
     },
     "require-dev": {
-        "league/commonmark": "@dev",
-        "jgm/CommonMark": "0.19",
-        "symfony/finder": "~2.3",
-        "phpunit/phpunit": "~4.3"
+        "webuni/commonmark-attributes-extension": "~0.3",
+        "jgm/CommonMark": "0.22",
+        "symfony/finder": "^2.7",
+        "symfony/var-dumper": "^2.7",
+        "phpunit/phpunit": "^4.3",
+        "fabpot/php-cs-fixer": "^1.9"
     },
     "repositories": [
         {
             "type": "package",
             "package": {
                 "name": "jgm/CommonMark",
-                "version": "0.19",
+                "version": "0.22",
                 "dist": {
-                    "url": "http://spec.commonmark.org/0.19/spec.txt",
+                    "url": "http://spec.commonmark.org/0.22/spec.txt",
                     "type": "file"
                 }
             }
@@ -44,7 +47,7 @@
         "psr-4": {
             "Webuni\\CommonMark\\TwigRenderer\\Tests\\": "tests"
         },
-        "classmap": ["vendor/league/commonmark/tests"]
+        "classmap": ["vendor/league/commonmark/tests", "vendor/webuni/commonmark-attributes-extension/tests"]
     },
     "extra": {
         "branch-alias": {

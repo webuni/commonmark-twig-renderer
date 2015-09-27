@@ -1,26 +1,53 @@
+{% extends 'commonmark_base.html.twig' %}
+
+{% block _inline_children -%}
+    {%- for node in node.children %}
+        {{- block(node|commonmark_block_name) }}
+    {%- endfor -%}
+{%- endblock %}
+
+{% block _children %}
+    {%- for node in node.children %}
+        {{- block(node|commonmark_block_name) }}
+        {{- not loop.last ? "\n" }}
+    {%- endfor -%}
+{% endblock %}
+
+{% block _attributes -%}
+    {% set attributes = node.data.attributes|default([])|merge(attributes|default([])) %}
+    {%- for name, value in attributes -%}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock %}
+
 {% block document -%}
-    {% set content = commonmark_render_children(node) -%}
-    {{ content|raw }}{{ '' != content ? "\n" }}
+    {%- set content = block('_children') %}
+    {{- content|raw }}{{ '' != content ? "\n" }}
 {%- endblock %}
 
 {% block block_quote -%}
-    {% set content = commonmark_render_children(node) -%}
-    <blockquote{{ commonmark_render_attributes(node) }}>
+    {% set content = block('_children') -%}
+    <blockquote{{ block('_attributes') }}>
     {%- if '' == content -%}
-        {{ commonmark_option('inner_separator', "\n") }}
+        {{ options.inner_separator|default("\n") }}
     {%- else -%}
-        {{- commonmark_option('inner_separator', "\n") }}{{ content|raw }}{{ commonmark_option('inner_separator', "\n") }}
+        {{- options.inner_separator|default("\n") }}{{ content|raw }}{{ options.inner_separator|default("\n") }}
     {%- endif -%}
     </blockquote>
 {%- endblock %}
 
 {% block fenced_code -%}
     {% set language = node.infowords[0]|default -%}
-    <pre{{ commonmark_render_attributes(node) }}><code{% if language %} class="language-{{ language }}"{% endif %}>{{ node.stringcontent }}</code></pre>
+    {% if language -%}
+        {% set attributes = { class: (node.data.attributes.class|default ~ " language-#{language}")|trim } -%}
+    {% endif -%}
+    <pre><code{{ block('_attributes') }}>{{ node.stringcontent }}</code></pre>
 {%- endblock %}
 
 {% block header -%}
-    <h{{ node.level }}{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</h{{ node.level }}>
+    <h{{ node.level }}{{ block('_attributes') }}>{{ block('_inline_children') }}</h{{ node.level }}>
 {%- endblock %}
 
 {% block horizontal_rule -%}
@@ -32,42 +59,46 @@
 {%- endblock %}
 
 {% block indented_code -%}
-    <pre{{ commonmark_render_attributes(node) }}><code>{{ node.stringcontent }}</code></pre>
+    <pre{{ block('_attributes') }}><code>{{ node.stringcontent }}</code></pre>
 {%- endblock %}
 
 {% block list_block -%}
     {% if node.listdata.type == constant('TYPE_UNORDERED', node) -%}
-        <ul{{ commonmark_render_attributes(node) }}>
-            {{- commonmark_option('inner_separator', "\n") -}}
-            {{- commonmark_render_children(node, node.tight) -}}
-            {{- commonmark_option('inner_separator', "\n") -}}
+        <ul{{ block('_attributes') }}>
+            {{- options.inner_separator|default("\n") -}}
+            {{- block('_children') -}}
+            {{- options.inner_separator|default("\n") -}}
         </ul>
     {%- else -%}
-        <ol{{ commonmark_render_attributes(node, node.listdata.start|default > 1 ? {start: node.listdata.start} : [] ) }}>
-            {{- commonmark_option('inner_separator', "\n") -}}
-            {{- commonmark_render_children(node, node.tight) -}}
-            {{- commonmark_option('inner_separator', "\n") -}}
+        <ol{% if node.listdata.start|default != 1 %} start="{{ node.listdata.start }}"{% endif %}{{ block('_attributes') }}>
+            {{- options.inner_separator|default("\n") -}}
+            {{- block('_children') -}}
+            {{- options.inner_separator|default("\n") -}}
         </ol>
     {%- endif %}
 {%- endblock %}
 
 {% block list_item -%}
-    {% set content = commonmark_render_children(node, in_tight_list|default(false)) -%}
-    <li{{ commonmark_render_attributes(node) }}>{{ content starts with '<' ? "\n" }}{{ content|raw }}{{ content ends with '>' ? "\n" }}</li>
+    {% set content = block('_children') -%}
+    <li{{ block('_attributes') }}>{{ content starts with '<' ? "\n" }}{{ content|raw }}{{ content ends with '>' ? "\n" }}</li>
 {%- endblock %}
 
 {% block paragraph -%}
-    {% if in_tight_list|default %}{{ commonmark_render_children(node) }}{% else %}<p{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</p>{% endif %}
+    {% if node.parent.parent.tight|default %}
+        {{- block('_inline_children') }}
+    {%- else -%}
+        <p{{ block('_attributes') }}>{{ block('_inline_children') }}</p>
+    {%- endif %}
 {%- endblock %}
 
 {# Inlines #}
 
 {% block code -%}
-    <code{{ commonmark_render_attributes(node) }}>{{ node.content }}</code>
+    <code{{ block('_attributes') }}>{{ node.content }}</code>
 {%- endblock %}
 
 {% block emphasis -%}
-    <em{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</em>
+    <em{{ block('_attributes') }}>{{ block('_inline_children') }}</em>
 {%- endblock %}
 
 {% block html -%}
@@ -75,13 +106,13 @@
 {%- endblock %}
 
 {% block image -%}
-    {% set alt = commonmark_render_children(node)|commonmark_image_alt -%}
-    <img{{ commonmark_render_attributes(node, node.data.title|default ? {src: node.url, alt: alt, title: node.data.title}: {src: node.url, alt: alt}) }} />
+    <img{{ block('_attributes') }} src="{{ node.url }}" alt="{{ block('_inline_children')|commonmark_image_alt }}"
+        {%- if node.data.title|default %} title="{{ node.data.title }}"{% endif %} />
 {%- endblock %}
 
 {% block link -%}
-    <a{{ commonmark_render_attributes(node, node.data.title ? {href: node.url, title: node.data.title} : {href: node.url}) }}>
-        {{- commonmark_render_children(node) -}}
+    <a{{ block('_attributes') }} href="{{ node.url }}"{% if node.data.title|default %} title="{{ node.data.title }}"{% endif %}>
+        {{- block('_inline_children') -}}
     </a>
 {%- endblock %}
 
@@ -89,17 +120,14 @@
     {% if node.type == constant('HARDBREAK', node) -%}
         <br />{{ "\n" }}
     {%- else -%}
-        {{ commonmark_option('soft_break', "\n") }}
+        {{ options.soft_break|default("\n") }}
     {%- endif %}
 {%- endblock %}
 
 {% block strong -%}
-    <strong{{ commonmark_render_attributes(node) }}>{{ commonmark_render_children(node) }}</strong>
+    <strong{{ block('_attributes') }}>{{ block('_inline_children') }}</strong>
 {%- endblock %}
 
 {% block text -%}
     {{ node.content }}
 {%- endblock %}
-
-{% block attributes %}
-{% endblock %}

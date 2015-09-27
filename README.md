@@ -45,7 +45,7 @@ you just need to override the appropriate block.
 {% extends 'commonmark.html.twig' %}
 
 {% block header -%}
-    {% set content = commonmark_render_children(node) -%}
+    {% set content = block('_inline_children') -%}
     <h{{ node.level }}><a name="{{ content|striptags|lower }}"></a>{{ content|raw }}</h{{ node.level }}>
 {%- endblock %}
 ```
