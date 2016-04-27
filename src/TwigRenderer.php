@@ -26,7 +26,7 @@ class TwigRenderer extends HtmlRenderer
     private $twig;
     private $template;
 
-    public function __construct(Environment $environment, \Twig_Environment $twig)
+    public function __construct(Environment $environment, \Twig_Environment $twig, $template = 'commonmark.html.twig')
     {
         parent::__construct($environment);
         $this->twig = $twig;
@@ -37,9 +37,9 @@ class TwigRenderer extends HtmlRenderer
         $options = $this->environment->getConfig('renderer', []);
 
         return $this->getTemplate()->render([
-            'node'          => $inline,
+            'node' => $inline,
             'in_tight_list' => false,
-            'options'       => $options,
+            'options' => $options,
         ]);
     }
 
@@ -48,9 +48,9 @@ class TwigRenderer extends HtmlRenderer
         $options = $this->environment->getConfig('renderer', []);
 
         return $this->getTemplate()->render([
-            'node'          => $block,
+            'node' => $block,
             'in_tight_list' => $inTightList,
-            'options'       => $options,
+            'options' => $options,
         ]);
     }
 

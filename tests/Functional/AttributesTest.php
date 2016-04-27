@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Webuni\CommonMark\TwigRenderer\tests\functional;
+namespace Webuni\CommonMark\TwigRenderer\tests\Functional;
 
 use Webuni\CommonMark\AttributesExtension\tests\functional\LocalDataTest as BaseAttributesTest;
+use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
 
 class AttributesTest extends BaseAttributesTest
 {

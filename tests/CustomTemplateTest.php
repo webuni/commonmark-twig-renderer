@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
+namespace Webuni\CommonMark\TwigRenderer\Tests;
 
 class CustomTemplateTest extends \PHPUnit_Framework_TestCase
 {

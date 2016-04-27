@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Webuni\CommonMark\TwigRenderer\tests\functional;
+namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
 
 use League\CommonMark\Tests\Functional\LocalDataTest as BaseLocalDataTest;
 use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;

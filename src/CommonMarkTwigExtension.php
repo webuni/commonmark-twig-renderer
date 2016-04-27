@@ -15,6 +15,8 @@ use League\CommonMark\Node\Node;
 
 class CommonMarkTwigExtension extends \Twig_Extension
 {
+    private static $cache = [];
+
     public static function createTwigLoader()
     {
         return new \Twig_Loader_Filesystem([__DIR__.'/Resources']);
@@ -31,12 +33,12 @@ class CommonMarkTwigExtension extends \Twig_Extension
     public function getBlockName(Node $node)
     {
         $class = get_class($node);
-        if (!isset($this->cache[$class])) {
+        if (!isset(self::$cache[$class])) {
             $ref = new \ReflectionClass($class);
-            $this->cache[$class] = strtolower(preg_replace('/((?<=[a-z]|\d)[A-Z]|(?<!^)[A-Z](?=[a-z]))/', '_\\1', $ref->getShortName()));
+            self::$cache[$class] = strtolower(preg_replace('/((?<=[a-z]|\d)[A-Z]|(?<!^)[A-Z](?=[a-z]))/', '_\\1', $ref->getShortName()));
         }
 
-        return $this->cache[$class];
+        return self::$cache[$class];
     }
 
     public function getImageAlt($html)

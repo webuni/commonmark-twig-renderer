@@ -5,6 +5,11 @@
     <h{{ node.level }}><a name="{{ content|striptags|lower }}"></a>{{ content|raw }}</h{{ node.level }}>
 {%- endblock %}
 
+{% block heading -%}
+    {% set content = block('_children') -%}
+    <h{{ node.level }}><a name="{{ content|striptags|lower }}"></a>{{ content|raw }}</h{{ node.level }}>
+{%- endblock %}
+
 {% block link -%}
     <a href="{{ node.url }}"{% if node.data.title|default %} title="{{ node.data.title }}"{% endif %}{{ block('_attributes') }}{% if node.url starts with 'http' %} class="external"{% endif %}>
         {{- block('_inline_children') -}}

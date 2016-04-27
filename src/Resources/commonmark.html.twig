@@ -28,12 +28,11 @@
 {%- endblock %}
 
 {% block block_quote -%}
-    {% set content = block('_children') -%}
     <blockquote{{ block('_attributes') }}>
-    {%- if '' == content -%}
-        {{ options.inner_separator|default("\n") }}
-    {%- else -%}
-        {{- options.inner_separator|default("\n") }}{{ content|raw }}{{ options.inner_separator|default("\n") }}
+    {%- set content = block('_children') -%}
+    {{- options.inner_separator|default("\n") }}
+    {%- if '' != content -%}
+        {{ content|raw }}{{ options.inner_separator|default("\n") }}
     {%- endif -%}
     </blockquote>
 {%- endblock %}
@@ -50,7 +49,15 @@
     <h{{ node.level }}{{ block('_attributes') }}>{{ block('_inline_children') }}</h{{ node.level }}>
 {%- endblock %}
 
+{% block heading -%}
+    <h{{ node.level }}{{ block('_attributes') }}>{{ block('_inline_children') }}</h{{ node.level }}>
+{%- endblock %}
+
 {% block horizontal_rule -%}
+    <hr />
+{%- endblock %}
+
+{% block thematic_break -%}
     <hr />
 {%- endblock %}
 
@@ -102,6 +109,10 @@
 {%- endblock %}
 
 {% block html -%}
+    {{ node.content|raw }}
+{%- endblock %}
+
+{% block html_inline -%}
     {{ node.content|raw }}
 {%- endblock %}
 

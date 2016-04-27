@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Webuni\CommonMark\TwigRenderer\tests;
+namespace Webuni\CommonMark\TwigRenderer\Tests;
 
 use League\CommonMark\Converter;
 use League\CommonMark\DocParser;
@@ -18,9 +18,6 @@ use Webuni\CommonMark\AttributesExtension\AttributesExtension;
 use Webuni\CommonMark\TwigRenderer\CommonMarkTwigExtension;
 use Webuni\CommonMark\TwigRenderer\TwigRenderer;
 
-/**
- * Class CommonMarkConverter.
- */
 class CommonMarkConverter extends Converter
 {
     public function __construct(array $config = [])
@@ -39,5 +36,10 @@ class CommonMarkConverter extends Converter
         $twig->addExtension(new CommonMarkTwigExtension());
 
         parent::__construct(new DocParser($environment), new TwigRenderer($environment, $twig));
+    }
+
+    public function convertToHtml($commonMark)
+    {
+        return str_replace('&#039;', "'", parent::convertToHtml($commonMark));
     }
 }

@@ -8,21 +8,25 @@
     "authors": [
         {
             "name": "Martin Hasoň",
-            "email": "martin.hason@gmail.com",
-            "role": "Lead Developer"
+            "email": "martin.hason@gmail.com"
+        },
+        {
+            "name": "Webuni s.r.o.",
+            "homepage": "https://www.webuni.cz"
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "league/commonmark": "^0.11",
-        "twig/twig": "~1.12|~2.0"
+        "php": "^5.5|^7.0",
+        "league/commonmark": "^0.11|^0.12|^0.13",
+        "twig/twig": "^1.12|^2.0"
     },
     "require-dev": {
-        "webuni/commonmark-attributes-extension": "~0.3",
-        "jgm/CommonMark": "0.22",
-        "symfony/finder": "^2.7",
-        "symfony/var-dumper": "^2.7",
-        "phpunit/phpunit": "^4.3",
+        "league/commonmark": "dev-master as 0.13",
+        "webuni/commonmark-attributes-extension": "dev-master",
+        "jgm/CommonMark": "0.25",
+        "symfony/finder": "^2.8|^3.0",
+        "symfony/var-dumper": "^2.8|^3.0",
+        "phpunit/phpunit": "^4.0|^5.0",
         "fabpot/php-cs-fixer": "^1.9"
     },
     "repositories": [
@@ -30,14 +34,17 @@
             "type": "package",
             "package": {
                 "name": "jgm/CommonMark",
-                "version": "0.22",
+                "version": "0.25",
                 "dist": {
-                    "url": "http://spec.commonmark.org/0.22/spec.txt",
+                    "url": "https://spec.commonmark.org/0.25/spec.txt",
                     "type": "file"
                 }
             }
         }
     ],
+    "config": {
+        "secure-http": false
+    },
     "autoload": {
         "psr-4": {
             "Webuni\\CommonMark\\TwigRenderer\\": "src"
@@ -51,7 +58,11 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1-dev"
+            "dev-master": "0.2-dev"
         }
+    },
+    "scripts": {
+        "post-install-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -rsf vendor/jgm vendor/league/commonmark/vendor/jgm",
+        "post-update-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -rsf vendor/jgm vendor/league/commonmark/vendor/jgm"
     }
 }
