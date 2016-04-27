@@ -21,7 +21,7 @@
         "twig/twig": "^1.12|^2.0"
     },
     "require-dev": {
-        "league/commonmark": "dev-master as 0.13",
+        "league/commonmark": "@dev",
         "webuni/commonmark-attributes-extension": "dev-master",
         "jgm/CommonMark": "0.25",
         "symfony/finder": "^2.8|^3.0",
@@ -36,7 +36,7 @@
                 "name": "jgm/CommonMark",
                 "version": "0.25",
                 "dist": {
-                    "url": "https://spec.commonmark.org/0.25/spec.txt",
+                    "url": "http://spec.commonmark.org/0.25/spec.txt",
                     "type": "file"
                 }
             }
