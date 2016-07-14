@@ -4,6 +4,7 @@
  * This is part of the webuni/commonmark-twig-renderer package.
  *
  * (c) Martin Hasoň <martin.hason@gmail.com>
+ * (c) Webuni s.r.o. <info@webuni.cz>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,7 +27,7 @@ class CommonMarkTwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('commonmark_block_name', [$this, 'getBlockName']),
-            new \Twig_SimpleFilter('commonmark_image_alt', [$this, 'getImageAlt']),
+            new \Twig_SimpleFilter('preg_replace', [$this, 'pregReplace']),
         ];
     }
 
@@ -41,11 +42,9 @@ class CommonMarkTwigExtension extends \Twig_Extension
         return self::$cache[$class];
     }
 
-    public function getImageAlt($html)
+    public function pregReplace($subject, $pattern, $replacement = '', $limit = -1)
     {
-        $alt = preg_replace('/\<[^>]*alt="([^"]*)"[^>]*\>/', '$1', $html);
-
-        return strip_tags($alt);
+        return preg_replace($pattern, $replacement, $subject, $limit);
     }
 
     public function getName()

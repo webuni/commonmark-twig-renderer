@@ -117,7 +117,8 @@
 {%- endblock %}
 
 {% block image -%}
-    <img{{ block('_attributes') }} src="{{ node.url }}" alt="{{ block('_inline_children')|commonmark_image_alt }}"
+    {% set alt = block('_inline_children')|preg_replace('/\<[^>]*alt="([^"]*)"[^>]*\>/', '$1')|striptags -%}
+    <img{{ block('_attributes') }} src="{{ node.url }}" alt="{{ alt }}"
         {%- if node.data.title|default %} title="{{ node.data.title }}"{% endif %} />
 {%- endblock %}
 
