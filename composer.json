@@ -62,7 +62,7 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -rsf vendor/jgm vendor/league/commonmark/vendor/jgm",
-        "post-update-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -rsf vendor/jgm vendor/league/commonmark/vendor/jgm"
+        "post-install-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -sf ../../../jgm vendor/league/commonmark/vendor/jgm",
+        "post-update-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -sf ../../../jgm vendor/league/commonmark/vendor/jgm"
     }
 }
