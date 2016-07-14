@@ -21,7 +21,7 @@ class CustomTemplateTest extends \PHPUnit_Framework_TestCase
     {
         $converter = new CommonMarkConverter(['renderer' => ['twig_template' => $template]]);
 
-        $commonmark = <<<EOT
+        $commonmark = <<<'EOT'
 Header
 ======
 Paragraph
@@ -31,7 +31,7 @@ Subheader
 Test [external link](http://example.org).
 EOT;
 
-        $html = <<<EOT
+        $html = <<<'EOT'
 <h1><a name="header"></a>Header</h1>
 <p>Paragraph</p>
 <h2><a name="subheader"></a>Subheader</h2>
