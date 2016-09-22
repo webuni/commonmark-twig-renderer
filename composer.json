@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^5.5|^7.0",
-        "league/commonmark": "^0.13.2|^0.14",
+        "league/commonmark": "^0.13.2|^0.14|^0.15",
         "twig/twig": "^1.17|^2.0@dev"
     },
     "require-dev": {
