@@ -12,7 +12,7 @@
 
 namespace Webuni\CommonMark\TwigRenderer\tests\Functional;
 
-use Webuni\CommonMark\AttributesExtension\tests\functional\LocalDataTest as BaseAttributesTest;
+use Webuni\CommonMark\AttributesExtension\Tests\Functional\LocalDataTest as BaseAttributesTest;
 use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
 
 class AttributesTest extends BaseAttributesTest
