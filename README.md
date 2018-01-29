@@ -22,12 +22,12 @@ Usage
 ```php
     use League\CommonMark\DocParser;
     use League\CommonMark\Environment;
-    use Webuni\CommonMark\CommonMarkTwigExtension;
-    use Webuni\CommonMark\TwigRenderer;
+    use Webuni\CommonMark\TwigRenderer\CommonMarkTwigExtension;
+    use Webuni\CommonMark\TwigRenderer\TwigRenderer;
     
     $environment = Environment::createCommonMarkEnvironment();
     
-    $twig = new Twig_Environment(CommonMarkTwigExtension::createTwigLoader()));
+    $twig = new Twig_Environment(CommonMarkTwigExtension::createTwigLoader());
     $twig->addExtension(new CommonMarkTwigExtension());
     
     $parser = new DocParser($environment);
