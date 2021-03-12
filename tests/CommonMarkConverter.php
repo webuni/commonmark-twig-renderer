@@ -15,7 +15,7 @@ namespace Webuni\CommonMark\TwigRenderer\Tests;
 use League\CommonMark\Converter;
 use League\CommonMark\DocParser;
 use League\CommonMark\Environment;
-use Webuni\CommonMark\AttributesExtension\AttributesExtension;
+use Twig\Environment as Twig;
 use Webuni\CommonMark\TwigRenderer\CommonMarkTwigExtension;
 use Webuni\CommonMark\TwigRenderer\TwigRenderer;
 
@@ -31,7 +31,7 @@ class CommonMarkConverter extends Converter
         $loader = CommonMarkTwigExtension::createTwigLoader();
         $loader->addPath(__DIR__.'/Resources');
 
-        $twig = new \Twig_Environment($loader, [
+        $twig = new Twig($loader, [
             'strict_variables' => true,
         ]);
         $twig->addExtension(new CommonMarkTwigExtension());

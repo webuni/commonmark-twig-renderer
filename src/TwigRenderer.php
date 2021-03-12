@@ -13,24 +13,38 @@
 namespace Webuni\CommonMark\TwigRenderer;
 
 use League\CommonMark\Block\Element\AbstractBlock;
+use League\CommonMark\ElementRendererInterface;
 use League\CommonMark\Environment;
-use League\CommonMark\HtmlRenderer;
 use League\CommonMark\Inline\Element\AbstractInline;
+use Twig\Environment as Twig;
+use Twig\Template;
 
-class TwigRenderer extends HtmlRenderer
+class TwigRenderer implements ElementRendererInterface
 {
+    private $environment;
     private $twig;
     private $template;
     private $defaultTemplate;
 
-    public function __construct(Environment $environment, \Twig_Environment $twig, $template = 'commonmark.html.twig')
+    public function __construct(Environment $environment, Twig $twig, $template = 'commonmark.html.twig')
     {
-        parent::__construct($environment);
+        $this->environment = $environment;
         $this->twig = $twig;
         $this->defaultTemplate = $template;
     }
 
-    protected function renderInline(AbstractInline $inline)
+    /**
+     * {@inheritdoc}
+     */
+    public function getOption(string $option, $default = null)
+    {
+        return $this->environment->getConfig('renderer/' . $option, $default);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderInline(AbstractInline $inline): string
     {
         $options = $this->environment->getConfig('renderer', []);
 
@@ -41,7 +55,23 @@ class TwigRenderer extends HtmlRenderer
         ]);
     }
 
-    public function renderBlock(AbstractBlock $block, $inTightList = false)
+    /**
+     * {@inheritdoc}
+     */
+    public function renderInlines(iterable $inlines): string
+    {
+        $result = [];
+        foreach ($inlines as $inline) {
+            $result[] = $this->renderInline($inline);
+        }
+
+        return \implode('', $result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderBlock(AbstractBlock $block, $inTightList = false): string
     {
         $options = $this->environment->getConfig('renderer', []);
 
@@ -52,7 +82,22 @@ class TwigRenderer extends HtmlRenderer
         ]);
     }
 
-    private function getTemplate()
+    /**
+     * {@inheritdoc}
+     */
+    public function renderBlocks(iterable $blocks, bool $inTightList = false): string
+    {
+        $result = [];
+        foreach ($blocks as $block) {
+            $result[] = $this->renderBlock($block, $inTightList);
+        }
+
+        $separator = $this->getOption('block_separator', "\n");
+
+        return \implode($separator, $result);
+    }
+
+    private function getTemplate(): Template
     {
         if (null === $this->template) {
             $name = $this->getOption('twig_template', $this->defaultTemplate);

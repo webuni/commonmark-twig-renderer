@@ -8,7 +8,8 @@
     "authors": [
         {
             "name": "Martin Hasoň",
-            "email": "martin.hason@gmail.com"
+            "email": "martin.hason@gmail.com",
+            "homepage": "https://www.martinhason.cz"
         },
         {
             "name": "Webuni s.r.o.",
@@ -16,34 +17,28 @@
         }
     ],
     "require": {
-        "php": "^5.5|^7.0",
-        "league/commonmark": "^0.13.2|^0.14",
-        "twig/twig": "^1.17|^2.0@dev"
+        "php": "^7.2|^8.0",
+        "league/commonmark": "^1.0",
+        "twig/twig": "^1.38|^2.4|^3.0"
     },
     "require-dev": {
-        "webuni/commonmark-attributes-extension": "dev-master",
-        "jgm/CommonMark": "0.25",
-        "symfony/finder": "^2.8|^3.0",
-        "symfony/var-dumper": "^2.8|^3.0",
-        "phpunit/phpunit": "^4.0|^5.0",
-        "friendsofphp/php-cs-fixer": "^1.9",
-        "sllh/php-cs-fixer-styleci-bridge": "^2.0"
+        "jgm/commonmark": "0.29"
     },
     "repositories": [
         {
             "type": "package",
             "package": {
-                "name": "jgm/CommonMark",
-                "version": "0.25",
+                "name": "jgm/commonmark",
+                "version": "0.29",
                 "dist": {
-                    "url": "http://spec.commonmark.org/0.25/spec.txt",
+                    "url": "https://spec.commonmark.org/0.29/spec.txt",
                     "type": "file"
                 }
             }
         }
     ],
     "config": {
-        "secure-http": false
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -54,14 +49,19 @@
         "psr-4": {
             "Webuni\\CommonMark\\TwigRenderer\\Tests\\": "tests"
         },
-        "classmap": ["vendor/league/commonmark/tests", "vendor/webuni/commonmark-attributes-extension/tests"]
+        "classmap": [
+            "vendor/league/commonmark/tests"
+        ]
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.2-dev"
+            "dev-master": "1.0-dev"
         }
     },
     "scripts": {
+        "analyse": "./run analyse",
+        "cs": "./run cs",
+        "tests": "./run tests",
         "post-install-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -sf ../../../jgm vendor/league/commonmark/vendor/jgm",
         "post-update-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -sf ../../../jgm vendor/league/commonmark/vendor/jgm"
     }

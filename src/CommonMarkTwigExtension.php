@@ -13,25 +13,28 @@
 namespace Webuni\CommonMark\TwigRenderer;
 
 use League\CommonMark\Node\Node;
+use Twig\Extension\AbstractExtension;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 
-class CommonMarkTwigExtension extends \Twig_Extension
+class CommonMarkTwigExtension extends AbstractExtension
 {
     private static $cache = [];
 
     public static function createTwigLoader()
     {
-        return new \Twig_Loader_Filesystem([__DIR__.'/Resources']);
+        return new FilesystemLoader([__DIR__.'/Resources']);
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('commonmark_block_name', [$this, 'getBlockName']),
-            new \Twig_SimpleFilter('preg_replace', [$this, 'pregReplace']),
+            new TwigFilter('commonmark_block_name', [$this, 'getBlockName']),
+            new TwigFilter('preg_replace', [$this, 'pregReplace']),
         ];
     }
 
-    public function getBlockName(Node $node)
+    public function getBlockName(Node $node): string
     {
         $class = get_class($node);
         if (!isset(self::$cache[$class])) {
@@ -42,12 +45,12 @@ class CommonMarkTwigExtension extends \Twig_Extension
         return self::$cache[$class];
     }
 
-    public function pregReplace($subject, $pattern, $replacement = '', $limit = -1)
+    public function pregReplace($subject, $pattern, $replacement = '', $limit = -1): string
     {
         return preg_replace($pattern, $replacement, $subject, $limit);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'commonmark';
     }
