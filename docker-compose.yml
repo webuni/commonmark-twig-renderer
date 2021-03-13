@@ -1,11 +1,23 @@
 version: '3.4'
 
+x-base: &base
+  image: minidocks/base
+  volumes:
+    - .:$PWD
+  working_dir: $PWD
+  command: sshd
+
 services:
   php:
+    <<: *base
     image: "minidocks/php-tools:${PHP_VERSION:-8.0}"
     volumes:
       - .:$PWD
       - ~/.composer/cache:/composer-cache
       - ~/.composer/auth.json:/composer/auth.json
-    working_dir: $PWD
-    command: sshd
+    environment:
+      ALIAS_GIT: ssh git git
+
+  git:
+    <<: *base
+    image: minidocks/git
