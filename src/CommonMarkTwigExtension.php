@@ -23,7 +23,7 @@ class CommonMarkTwigExtension extends AbstractExtension
 
     public static function createTwigLoader()
     {
-        return new FilesystemLoader([__DIR__.'/Resources']);
+        return new FilesystemLoader([dirname(__DIR__) . '/templates']);
     }
 
     public function getFilters(): array

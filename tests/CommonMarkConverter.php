@@ -12,14 +12,15 @@
 
 namespace Webuni\CommonMark\TwigRenderer\Tests;
 
-use League\CommonMark\Converter;
 use League\CommonMark\DocParser;
 use League\CommonMark\Environment;
+use League\CommonMark\Extension\Attributes\AttributesExtension;
+use League\CommonMark\MarkdownConverter;
 use Twig\Environment as Twig;
 use Webuni\CommonMark\TwigRenderer\CommonMarkTwigExtension;
 use Webuni\CommonMark\TwigRenderer\TwigRenderer;
 
-class CommonMarkConverter extends Converter
+class CommonMarkConverter extends MarkdownConverter
 {
     public function __construct(array $config = [])
     {
@@ -39,7 +40,7 @@ class CommonMarkConverter extends Converter
         parent::__construct(new DocParser($environment), new TwigRenderer($environment, $twig));
     }
 
-    public function convertToHtml($commonMark)
+    public function convertToHtml(string $commonMark): string
     {
         return str_replace('&#039;', "'", parent::convertToHtml($commonMark));
     }

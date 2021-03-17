@@ -22,7 +22,8 @@
         "twig/twig": "^1.38|^2.4|^3.0"
     },
     "require-dev": {
-        "jgm/commonmark": "0.29"
+        "jgm/commonmark": "0.29",
+        "league/commonmark": "^1.0@dev"
     },
     "repositories": [
         {
@@ -38,6 +39,7 @@
         }
     ],
     "config": {
+        "github-protocols": ["https"],
         "sort-packages": true
     },
     "autoload": {

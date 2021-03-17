@@ -12,11 +12,13 @@
 
 namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
 
-use League\CommonMark\Tests\Functional\SpecTest as BaseSpecTest;
+use League\CommonMark\Tests\Functional\HtmlInputTest as BaseHtmlInputTest;
 use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
 
-class SpecTest extends BaseSpecTest
+class HtmlInputTest extends BaseHtmlInputTest
 {
+    protected $converter;
+
     protected function setUp(): void
     {
         $this->converter = new CommonMarkConverter();

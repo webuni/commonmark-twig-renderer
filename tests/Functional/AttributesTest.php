@@ -10,16 +10,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Webuni\CommonMark\TwigRenderer\tests\Functional;
+namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
 
-use Webuni\CommonMark\AttributesExtension\tests\functional\LocalDataTest as BaseAttributesTest;
+use League\CommonMark\Tests\Functional\AbstractLocalDataTest;
+use League\CommonMark\Tests\Functional\Extension\Attributes\LocalDataTest as BaseAttributesTest;
 use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
 
-class AttributesTest extends BaseAttributesTest
+class AttributesTest extends AbstractLocalDataTest
 {
+    private $localDataTest;
     protected $converter;
 
-    protected function setUp()
+    public function __construct()
+    {
+        $this->localDataTest = new BaseAttributesTest();
+    }
+
+    protected function setUp(): void
     {
         $this->converter = new CommonMarkConverter();
     }
@@ -27,12 +34,16 @@ class AttributesTest extends BaseAttributesTest
     /**
      * @dataProvider dataProvider
      */
-    public function testExample($markdown, $html, $testName)
+    public function testRenderer(string $markdown, string $html, string $testName): void
     {
-        if ('table_attributes' === $testName) {
-            $this->markTestSkipped($testName);
-        }
+        $this->assertMarkdownRendersAs($markdown, $html, $testName);
+    }
 
-        parent::testExample($markdown, $html, $testName);
+    /**
+     * @return iterable<string, string, string>
+     */
+    public function dataProvider(): iterable
+    {
+        return $this->localDataTest->dataProvider();
     }
 }

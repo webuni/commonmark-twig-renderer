@@ -17,13 +17,12 @@ use League\CommonMark\ElementRendererInterface;
 use League\CommonMark\Environment;
 use League\CommonMark\Inline\Element\AbstractInline;
 use Twig\Environment as Twig;
-use Twig\Template;
 
 class TwigRenderer implements ElementRendererInterface
 {
     private $environment;
     private $twig;
-    private $template;
+    private $templateName;
     private $defaultTemplate;
 
     public function __construct(Environment $environment, Twig $twig, $template = 'commonmark.html.twig')
@@ -48,7 +47,7 @@ class TwigRenderer implements ElementRendererInterface
     {
         $options = $this->environment->getConfig('renderer', []);
 
-        return $this->getTemplate()->render([
+        return $this->render([
             'node' => $inline,
             'in_tight_list' => false,
             'options' => $options,
@@ -75,7 +74,7 @@ class TwigRenderer implements ElementRendererInterface
     {
         $options = $this->environment->getConfig('renderer', []);
 
-        return $this->getTemplate()->render([
+        return $this->render([
             'node' => $block,
             'in_tight_list' => $inTightList,
             'options' => $options,
@@ -97,13 +96,12 @@ class TwigRenderer implements ElementRendererInterface
         return \implode($separator, $result);
     }
 
-    private function getTemplate(): Template
+    private function render(array $context): string
     {
-        if (null === $this->template) {
-            $name = $this->getOption('twig_template', $this->defaultTemplate);
-            $this->template = $this->twig->loadTemplate($name);
+        if (null === $this->templateName) {
+            $this->templateName = $this->getOption('twig_template', $this->defaultTemplate);
         }
 
-        return $this->template;
+        return $this->twig->render($this->templateName, $context);
     }
 }

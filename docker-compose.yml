@@ -4,6 +4,8 @@ x-base: &base
   image: minidocks/base
   volumes:
     - .:$PWD
+    - ~/.composer/cache:/composer-cache
+    - ~/.composer/auth.json:/composer/auth.json
   working_dir: $PWD
   command: sshd
 
@@ -11,12 +13,10 @@ services:
   php:
     <<: *base
     image: "minidocks/php-tools:${PHP_VERSION:-8.0}"
-    volumes:
-      - .:$PWD
-      - ~/.composer/cache:/composer-cache
-      - ~/.composer/auth.json:/composer/auth.json
+    depends_on:
+      - git
     environment:
-      ALIAS_GIT: ssh git git
+      ALIAS_GIT: ssh -y git git
 
   git:
     <<: *base

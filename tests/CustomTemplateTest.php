@@ -12,12 +12,14 @@
 
 namespace Webuni\CommonMark\TwigRenderer\Tests;
 
-class CustomTemplateTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CustomTemplateTest extends TestCase
 {
     /**
      * @dataProvider getTemplates
      */
-    public function testTemplateWithUse($template)
+    public function testTemplateWithUse($template): void
     {
         $converter = new CommonMarkConverter(['renderer' => ['twig_template' => $template]]);
 
@@ -42,7 +44,7 @@ EOT;
         $this->assertEquals($html, $converter->convertToHtml($commonmark));
     }
 
-    public function getTemplates()
+    public function getTemplates(): array
     {
         return [
             ['custom_use.html.twig'],

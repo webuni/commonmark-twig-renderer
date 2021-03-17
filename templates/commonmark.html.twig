@@ -1,5 +1,7 @@
 {% extends 'commonmark_base.html.twig' %}
 
+{% use 'commonmark_table.html.twig' %}
+
 {% block _inline_children -%}
     {%- for node in node.children %}
         {{- block(node|commonmark_block_name) }}
