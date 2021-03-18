@@ -19,25 +19,13 @@ Usage
 -----
 
 ```php
-    use League\CommonMark\DocParser;
-    use League\CommonMark\Environment;
-    use Webuni\CommonMark\CommonMarkTwigExtension;
-    use Webuni\CommonMark\TwigRenderer;
+    use League\CommonMark\CommonMarkConverter;
+    use Webuni\CommonMark\TwigRenderer\CommonMarkTwig;
 
-    $environment = Environment::createCommonMarkEnvironment();
+    $converter = new CommonMarkConverter();
+    CommonMarkTwig::setTwigRenderer($converter);
 
-    $twig = new Twig_Environment(CommonMarkTwigExtension::createTwigLoader()));
-    $twig->addExtension(new CommonMarkTwigExtension());
-
-    $parser = new DocParser($environment);
-
-    // Here's our sample input
-    $markdown = '# Hello World!';
-
-    $documentAST = $parser->parse($markdown);
-
-    $twigRenderer = new TwigRenderer($environment, $twig);
-    echo $twigRenderer->renderBlock($documentAST);
+    echo $converter->convertToHtml('# Hello World!');
 ```
 
 Template customization

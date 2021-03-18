@@ -18,7 +18,7 @@ use League\CommonMark\Environment;
 use League\CommonMark\Inline\Element\AbstractInline;
 use Twig\Environment as Twig;
 
-class TwigRenderer implements ElementRendererInterface
+final class TwigRenderer implements ElementRendererInterface
 {
     private $environment;
     private $twig;

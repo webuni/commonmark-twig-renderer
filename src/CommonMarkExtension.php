@@ -14,17 +14,11 @@ namespace Webuni\CommonMark\TwigRenderer;
 
 use League\CommonMark\Node\Node;
 use Twig\Extension\AbstractExtension;
-use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
-class CommonMarkTwigExtension extends AbstractExtension
+class CommonMarkExtension extends AbstractExtension
 {
     private static $cache = [];
-
-    public static function createTwigLoader()
-    {
-        return new FilesystemLoader([dirname(__DIR__) . '/templates']);
-    }
 
     public function getFilters(): array
     {
@@ -48,10 +42,5 @@ class CommonMarkTwigExtension extends AbstractExtension
     public function pregReplace($subject, $pattern, $replacement = '', $limit = -1): string
     {
         return preg_replace($pattern, $replacement, $subject, $limit);
-    }
-
-    public function getName(): string
-    {
-        return 'commonmark';
     }
 }

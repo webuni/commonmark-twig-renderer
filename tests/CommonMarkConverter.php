@@ -17,7 +17,7 @@ use League\CommonMark\Environment;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\MarkdownConverter;
 use Twig\Environment as Twig;
-use Webuni\CommonMark\TwigRenderer\CommonMarkTwigExtension;
+use Webuni\CommonMark\TwigRenderer\CommonMarkExtension;
 use Webuni\CommonMark\TwigRenderer\TwigRenderer;
 
 class CommonMarkConverter extends MarkdownConverter
@@ -29,13 +29,13 @@ class CommonMarkConverter extends MarkdownConverter
         $environment->mergeConfig($config);
         $environment->addExtension(new AttributesExtension());
 
-        $loader = CommonMarkTwigExtension::createTwigLoader();
+        $loader = CommonMarkExtension::createTwigLoader();
         $loader->addPath(__DIR__.'/Resources');
 
         $twig = new Twig($loader, [
             'strict_variables' => true,
         ]);
-        $twig->addExtension(new CommonMarkTwigExtension());
+        $twig->addExtension(new CommonMarkExtension());
 
         parent::__construct(new DocParser($environment), new TwigRenderer($environment, $twig));
     }
