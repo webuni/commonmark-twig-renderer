@@ -14,7 +14,7 @@ namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
 
 use League\CommonMark\Tests\Functional\AbstractLocalDataTest;
 use League\CommonMark\Tests\Functional\Extension\Attributes\LocalDataTest as BaseAttributesTest;
-use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
+use Webuni\CommonMark\TwigRenderer\CommonMarkTwig;
 
 class AttributesTest extends AbstractLocalDataTest
 {
@@ -28,7 +28,9 @@ class AttributesTest extends AbstractLocalDataTest
 
     protected function setUp(): void
     {
-        $this->converter = new CommonMarkConverter();
+        $this->localDataTest->setUp();
+        $this->converter = $this->localDataTest->converter;
+        CommonMarkTwig::setTwigRenderer($this->converter);
     }
 
     /**

@@ -2,7 +2,11 @@
     "name": "webuni/commonmark-twig-renderer",
     "type": "library",
     "description": "The Twig renderer for CommonMark PHP implementation",
-    "keywords": ["markdown","twig","commonmark"],
+    "keywords": [
+        "markdown",
+        "twig",
+        "commonmark"
+    ],
     "homepage": "https://github.com/webuni/commonmark-twig-renderer",
     "license": "MIT",
     "authors": [
@@ -17,30 +21,23 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^7.2 || ^8.0",
         "league/commonmark": "^1.0",
-        "twig/twig": "^1.38|^2.4|^3.0"
+        "twig/twig": "^1.38 || ^2.4 || ^3.0"
     },
     "require-dev": {
-        "jgm/commonmark": "0.29",
-        "league/commonmark": "^1.0@dev"
+        "commonmark/commonmark.js": "0.29.2",
+        "github/gfm": "0.29.0",
+        "league/commonmark": "^1.0@dev",
+        "symfony/finder": "^5.0"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "jgm/commonmark",
-                "version": "0.29",
-                "dist": {
-                    "url": "https://spec.commonmark.org/0.29/spec.txt",
-                    "type": "file"
-                }
-            }
-        }
-    ],
     "config": {
-        "github-protocols": ["https"],
         "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -55,16 +52,43 @@
             "vendor/league/commonmark/tests"
         ]
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "commonmark/commonmark.js",
+                "version": "0.29.2",
+                "dist": {
+                    "url": "https://github.com/commonmark/commonmark.js/archive/0.29.2.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "github/gfm",
+                "version": "0.29.0",
+                "dist": {
+                    "url": "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.0.zip",
+                    "type": "zip"
+                }
+            }
         }
-    },
+    ],
     "scripts": {
+        "post-install-cmd": [
+            "mkdir -p vendor/league/commonmark/vendor",
+            "ln -sf ../../../github vendor/league/commonmark/vendor/github",
+            "ln -sf ../../../commonmark vendor/league/commonmark/vendor/commonmark"
+        ],
+        "post-update-cmd": [
+            "mkdir -p vendor/league/commonmark/vendor",
+            "ln -sf ../../../github vendor/league/commonmark/vendor/github",
+            "ln -sf ../../../commonmark vendor/league/commonmark/vendor/commonmark"
+        ],
         "analyse": "./run analyse",
         "cs": "./run cs",
-        "tests": "./run tests",
-        "post-install-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -sf ../../../jgm vendor/league/commonmark/vendor/jgm",
-        "post-update-cmd": "mkdir -p vendor/league/commonmark/vendor; ln -sf ../../../jgm vendor/league/commonmark/vendor/jgm"
+        "tests": "./run tests"
     }
 }

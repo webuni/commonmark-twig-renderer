@@ -13,12 +13,15 @@
 namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
 
 use League\CommonMark\Tests\Functional\SpecTest as BaseSpecTest;
-use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
+use Webuni\CommonMark\TwigRenderer\CommonMarkTwig;
+use Webuni\CommonMark\TwigRenderer\Tests\ConverterTestDecorator;
 
 class SpecTest extends BaseSpecTest
 {
     protected function setUp(): void
     {
-        $this->converter = new CommonMarkConverter();
+        parent::setUp();
+        CommonMarkTwig::setTwigRenderer($this->converter);
+        $this->converter = new ConverterTestDecorator($this->converter);
     }
 }

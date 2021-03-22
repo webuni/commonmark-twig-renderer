@@ -13,14 +13,13 @@
 namespace Webuni\CommonMark\TwigRenderer\Tests\Functional;
 
 use League\CommonMark\Tests\Functional\LocalDataTest as BaseLocalDataTest;
-use Webuni\CommonMark\TwigRenderer\Tests\CommonMarkConverter;
+use Webuni\CommonMark\TwigRenderer\CommonMarkTwig;
 
-class LocalDataTest extends BaseLocalDataTest
+final class LocalDataTest extends BaseLocalDataTest
 {
-    protected $converter;
-
     protected function setUp(): void
     {
-        $this->converter = new CommonMarkConverter();
+        parent::setUp();
+        CommonMarkTwig::setTwigRenderer($this->converter);
     }
 }

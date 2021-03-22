@@ -12,7 +12,11 @@
 
 namespace Webuni\CommonMark\TwigRenderer\Tests;
 
+use League\CommonMark\CommonMarkConverter;
 use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Webuni\CommonMark\TwigRenderer\CommonMarkTwig;
 
 class CustomTemplateTest extends TestCase
 {
@@ -21,7 +25,9 @@ class CustomTemplateTest extends TestCase
      */
     public function testTemplateWithUse($template): void
     {
+        $twig = new Environment(new FilesystemLoader([__DIR__.'/templates']));
         $converter = new CommonMarkConverter(['renderer' => ['twig_template' => $template]]);
+        CommonMarkTwig::setTwigRenderer($converter, $twig);
 
         $commonmark = <<<'EOT'
 Header

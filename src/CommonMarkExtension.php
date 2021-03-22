@@ -16,7 +16,7 @@ use League\CommonMark\Node\Node;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class CommonMarkExtension extends AbstractExtension
+final class CommonMarkExtension extends AbstractExtension
 {
     private static $cache = [];
 
@@ -32,7 +32,7 @@ class CommonMarkExtension extends AbstractExtension
     {
         $class = get_class($node);
         if (!isset(self::$cache[$class])) {
-            $ref = new \ReflectionClass($class);
+            $ref = new \ReflectionClass($node);
             self::$cache[$class] = strtolower(preg_replace('/((?<=[a-z]|\d)[A-Z]|(?<!^)[A-Z](?=[a-z]))/', '_\\1', $ref->getShortName()));
         }
 
